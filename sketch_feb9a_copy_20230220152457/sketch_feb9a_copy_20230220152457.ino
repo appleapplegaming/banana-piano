@@ -28,11 +28,12 @@ void setup() {
 bool debouncing = false;  // variable to keep track of debouncing state
 bool debouncing2 = false;  // variable to keep track of debouncing state
 bool one = false;
+bool two = false;
 void loop() {
   int touchValue = analogRead(touchPin);  // read the value from the touch sensor
   int touchValue2 = analogRead(touchPin2);  // read the value from the touch sensor
 
-  
+  //note1
   if (touchValue < threshold) {  // if the touch sensor is touched
     digitalWrite(ledPin, HIGH);  // turn on the "L" LED
     one = true;
@@ -46,7 +47,20 @@ void loop() {
     one = false;
     delay(300);
   }
+  //note 2
+    if (touchValue2 < threshold) {  // if the touch sensor is touched
+    digitalWrite(ledPin2, HIGH);  // turn on the "L" LED
+    two = true;
+      Serial.println(touchValue2);
+  } else {
+    digitalWrite(ledPin2, LOW);  // turn off the "L" LED
+  }
 
+  if (two == true) {
+    Serial.println("two");
+    two = false;
+    delay(300);
+  }
 
 
 
