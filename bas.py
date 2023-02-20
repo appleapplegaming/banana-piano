@@ -56,47 +56,55 @@
 # p.load_instrument("Honky-tonk Piano")
 # p.play(note)
 # import serial
-import os
-import time
-from playsound import playsound
+# import os
+# import time
+# from playsound import playsound
 
 
 
-# ser = serial.Serial(port="/dev/ttyUSB0",baudrate=115200)
+
+# import serial
+
+# ser = serial.Serial('COM3', 9600)  # replace 'COM3' with the name of your serial port
 
 # while True:
-#     for line in ser.readline():
-#         print(chr(line))
+#     value = ser.readline().strip().decode('utf-8')  # read a line from the serial port and remove the line ending
 
-#         if chr(line) == '0':
-#             os.system("aplay ./wav-piano-sound/wav/c1.wav")
-
-#         if chr(line) == '1':
-#             os.system("aplay ./wav-piano-sound/wav/d1.wav")
-
-#         if chr(line) == '2':
-#             os.system("aplay ./wav-piano-sound/wav/e1.wav")
-
-#         if chr(line) == '3':
-#             os.system("aplay ./wav-piano-sound/wav/f1.wav")
-
-# ser.close()
-
-# playsound('wav-piano-sound/c5.mp3')
-# time.sleep(0.2)
+#     if value == "one":
+#         # play a note when touch sensor is touched
+#         playsound('banana-piano/wav-piano-sound/c5.mp3')
+#         print("Note played!")
+#     elif value == "two":
+#         # play a note when touch sensor is touched
+#         playsound('banana-piano/wav-piano-sound/a4.mp3')
+#         print("Note played2!")
+#     value=""
 import serial
+import threading
+from playsound import playsound
 
 ser = serial.Serial('COM3', 9600)  # replace 'COM3' with the name of your serial port
 
-while True:
-    value = ser.readline().strip().decode('utf-8')  # read a line from the serial port and remove the line ending
-
-    if value == "one":
+def play_sound(note):
+    if note == "one":
         # play a note when touch sensor is touched
         playsound('banana-piano/wav-piano-sound/c5.mp3')
         print("Note played!")
-    elif value == "two":
+    elif note == "two":
         # play a note when touch sensor is touched
         playsound('banana-piano/wav-piano-sound/a4.mp3')
         print("Note played2!")
-    value=""
+
+def read_serial():
+    while True:
+        value = ser.readline().strip().decode('utf-8')  # read a line from the serial port and remove the line ending
+        if value in ["one", "two"]:
+            threading.Thread(target=play_sound, args=(value,)).start()
+        value=""
+
+# start the serial reading thread
+serial_thread = threading.Thread(target=read_serial)
+serial_thread.start()
+
+# wait for the serial reading thread to finish (which should be never)
+serial_thread.join()
