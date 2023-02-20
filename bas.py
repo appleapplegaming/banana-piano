@@ -56,9 +56,9 @@
 # p.load_instrument("Honky-tonk Piano")
 # p.play(note)
 # import serial
-# import os
-# import time
-# from playsound import playsound
+import os
+import time
+from playsound import playsound
 
 
 
