@@ -1,2 +1,2 @@
 # banana-piano
-![](/imgs/piano.png)
+![](/PXL_20230330_081819282.jpg)
